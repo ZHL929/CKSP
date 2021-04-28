@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> - 注册</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="~/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="~/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="~/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/style.css?v=4.1.0" rel="stylesheet">
+    <script>if(window.top !== window.self){ window.top.location = window.location;}</script>
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name"></h1>
+            </div>
+            <h3>校园知识共享平台—欢迎注册</h3>
+            <p>创建一个新账户</p>
+            @*<form class="m-t" role="form" action="/Login/Index">*@
+            <div class="form-group">
+                <label><input type="radio" name="radio1" value="1" checked />      老师      </label>
+                <label><input type="radio" name="radio1" value="2" />      学生      </label>
+                <label><input type="radio" name="radio1" value="3" />      管理员      </label>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入用户名(学工号)" id="username" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请输入密码" id="password" required="">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请再次输入密码" id="compassword" required="">
+            </div>
+            <div class="form-group">
+                <input type="tel" class="form-control" placeholder="请输入手机号码" id="phone" required="">
+            </div>
+           
+            <button id="btnRegister" class="btn btn-primary block full-width m-b">注 册</button>
+            <p class="text-muted text-center">
+                <small>已经有账户了？</small><a href="/Login/Index">点此登录</a>
+            </p>
+            @*</form>*@
+        </div>
+    </div>
+    <!-- 全局js -->
+    <script src="~/js/jquery.min.js?v=2.1.4"></script>
+    <script src="~/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- iCheck -->
+    <script src="~/js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        var selector;
+        var value
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+  
+        //返回被选择radio的value属性值
+        function whichRadioValueChecked(selector) {
+            var rtn = "";
+            selector.each(function () {
+                if ($(this).prop("checked")) {
+                    rtn = $(this).attr("value");
+                }
+            });
+            return rtn;
+        }
+
+        selector = $('input[type="radio"][name="radio1"]');
+
+        selector.each(function () {
+            $(this).change(function () {
+                value = whichRadioValueChecked(selector);
+            })
+        });
+
+        $(document).ready(function () {
+            $("#btnRegister").click(function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Login/Register?userName=' + $("#username").val() + "&pwd=" + $("#password").val() + "&phone=" + $("#phone").val() + "&value=" + value,
+                    //data: {
+                    //    userNum: $("#username").val(),
+                    //    userPwd: $("#password").val(),
+                    //    orgId: orgId
+                    //},
+                    dataType: 'Json',
+                    success: function (result) {
+
+                        if (result.code == 1) {
+                            alert(result.message);
+                            window.location.href = "/Login/Index";//页面跳转
+                        } else {
+                            alert(result.message);
+                        }
+
+                    },
+                    error: function (ref) {
+                        //layer.msg(ref.msg);
+                    }
+                })
+            })
+
+        })
+
+
+
+    </script>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,142 @@
+﻿
+@{
+    ViewData["Title"] = "审核上传文件";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>校园知识共享平台—审核资料</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="~/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="~/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="~/css/animate.css" rel="stylesheet">
+    <link href="~/css/style.css?v=4.1.0" rel="stylesheet">
+</head>
+<body class="gray-bg">
+    <div>
+        <h2 style="font-weight: 700;">审核上传文件</h2>
+    </div>  
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>状态</th>
+                    <th>标题</th>
+                    <th>上传时间</th>
+                    <th>上传人</th>
+                    <th>分类专业</th>
+                    <th>审核</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+            </tbody>
+        </table>
+     </div>
+            <!-- 全局js -->
+    <script src="~/js/jquery.min.js?v=2.1.4"></script>
+    <script src="~/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="~/js/content.js?v=1.0.0"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+
+                // Ajax example
+                //                $.ajax().always(function () {
+                //                    simpleLoad($(this), false)
+                //                });
+                simpleLoad(btn, false)
+            });
+            f_RefreshFiles();
+
+            function f_RefreshFiles() {
+                $.get('ShowNoCheckFiles', function (data) {
+                    var data = eval(data);
+                    //console.log(data[0]);
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log(data[0].fileName);
+                        var str = "<tr>" +
+                            "<td>" +
+                            "<span class=\"label label-primary\"><i class=\"fa \"></i>" + data[i].statusStr + "</span>" +
+                            "</td>" +
+                            "<td>" +
+                            "<a href=\"javascript: void (0);\" onclick =\"f_skipFiles('" + data[i].fileURL.replace(/\\/g,'-') + "')\">" + data[i].fileName + "</a>" +
+                            "</td>" +
+                            "<td>" +
+                            data[i].fileTimeStr +
+                            "</td>" +
+                            "<td>" +
+                             data[i].uploadName +
+                            "</td>" +
+                            "<td>" +
+                             data[i].courseId +
+                            "</td>" +
+                            "<td>" +
+                            "<a href=\"javascript: void (0);\" onclick =\"f_checkFiles(" + data[i].fileId + ")\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-pencil\"></i>审核通过 </a>" +
+                            "<a href=\"javascript: void (0);\" onclick =\"f_checkNoFiles(" + data[i].fileId + ")\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-pencil\"></i>审核不通过 </a>" +
+                            "</td>" +
+                            "</tr>";
+                        //onclick ="f_FindCourse(${data[i].courseId})"
+                        $(".tbody").append(str);
+                    }
+                });
+            }
+           
+        });
+
+        function Refresh() {
+            $(".tbody").empty();
+            f_RefreshFiles();
+            
+        }
+
+
+        function f_skipFiles(url) {
+            alert(url)
+            window.location.href = url.replace(/-/g, '\\');
+        }
+
+        function f_checkFiles(fileId) {
+            alert("check:" + fileId);
+            $.ajax({
+                type: 'PUT',
+                url: '/Files/CheckFiles?fileId=' + fileId,
+                dataType: 'Json',
+                success: function (result) {
+                    alert(result.msg);
+                    Refresh();
+                },
+                error: function (result) {
+                    alert(result.msg);
+                }
+            })
+        }
+        function f_checkNoFiles(fileId) {
+            alert("check:" + fileId);
+            $.ajax({
+                type: 'PUT',
+                url: '/Files/CheckNoFiles?fileId=' + fileId,
+                dataType: 'Json',
+                success: function (result) {
+                    alert(result.msg);
+                    Refresh()
+                },
+                error: function (result) {
+                    alert(result.msg);
+                }
+            })
+        }
+    </script>
+</body>
+</html>
