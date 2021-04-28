@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TJCU.CKSP.Common;
 using TJCU.CKSP.Models;
-using TJCU.ZHl.CKSP.Common;
-using TJCU.ZHl.CKSP.Models;
 
 namespace TJCU.CKSP.Controllers
 {
@@ -28,7 +28,10 @@ namespace TJCU.CKSP.Controllers
 
         [HttpGet]
         public IActionResult Login(string userName, string pwd,string value)
-        {           
+        {
+            HttpContext.Session.SetString("UserName", userName);
+            HttpContext.Session.SetString("UserRole", value);
+
             int i = 0;
             if (value == "1")
             {                
@@ -56,6 +59,14 @@ namespace TJCU.CKSP.Controllers
             }
             if (i != 0 )
             {
+                //byte[] loginName;
+                //var nname = HttpContext.Session.TryGetValue("UserName", out loginName);
+                //string myname = System.Text.Encoding.UTF8.GetString(loginName);
+                string loginName =  HttpContext.Session.GetString("UserName");
+                string userRole =  HttpContext.Session.GetString("UserRole");
+                CurrentUser.UserName = loginName;
+                CurrentUser.UserRole = userRole;
+
                 return Ok(new { Message = "登陆成功", Code = 1 });
             }
             else
@@ -161,5 +172,8 @@ namespace TJCU.CKSP.Controllers
 
             }
         }
+
+        
+
     }
 }

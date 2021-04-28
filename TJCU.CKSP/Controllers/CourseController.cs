@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using TJCU.CKSP.Models;
-using TJCU.ZHl.CKSP.Common;
+using TJCU.CKSP.Common;
 
 namespace TJCU.CKSP.Controllers
 {
@@ -30,12 +30,21 @@ namespace TJCU.CKSP.Controllers
 
 
         [HttpGet]
-        public IActionResult GetCourseList()
+        public IActionResult GetCourseList(int majorId)
         {
-            var courseList = SqlSugarHelper.Instance.Queryable<EntityCourse>().ToList();
+            var courseList = SqlSugarHelper.Instance.Queryable<EntityCourse>().Where(it => it.MajorId == majorId).ToList();
             //string data = JsonConvert.SerializeObject(courseList);
             return Ok(courseList);
         }
+
+        [HttpGet]
+        public IActionResult GetMajor()
+        {
+            var majorList = SqlSugarHelper.Instance.Queryable<EntityMajor>().ToList();
+            //string data = JsonConvert.SerializeObject(courseList);
+            return Ok(majorList);
+        }
+
 
         [HttpPost]
         public IActionResult AddCourse(EntityCourse course)
@@ -60,6 +69,26 @@ namespace TJCU.CKSP.Controllers
             }
             return Ok(new { code = 400, msg = "删除失败！" });
         }
+        
+        [HttpPut]
+        public IActionResult CheckCourse(int courseId)
+        {
+            var check = 0;
+            var course = SqlSugarHelper.Instance.Queryable<EntityCourse>().Where(it => it.CourseId == courseId).ToList();
+            if (course[0].Status == EnumStatus.待审核.GetHashCode())
+            {
+                 check = SqlSugarHelper.Instance.Updateable<EntityCourse>().SetColumns(it => new EntityCourse() { Status = EnumStatus.开课中.GetHashCode() }).Where(it => it.CourseId == courseId).ExecuteCommand();
+            }
+            else
+            {
+                return Ok(new { code = 500, msg = "已审核过了！" }); ;
+            }
+            if (check > 0)
+            {
+                return Ok(new { code = 200, msg = "审核成功！" });
+            }
+            return Ok(new { code = 400, msg = "审核失败！" });
 
+        }
     }
 }
