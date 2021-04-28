@@ -27,8 +27,6 @@
     <div class="signinpanel">
         <div class="row">
             <div class="col-sm-12">
-                @*<form method="post" action="index.html">*@
-
                 <h3 class="m-t-md">登录校园知识共享平台</h3>
 
                 <label><input type="radio" name="radio1" value="1" checked />老师</label>
@@ -39,7 +37,6 @@
                 <input type="password" class="form-control pword m-b" id="password" placeholder="密码" />
                 <a href="/Login/Forget">忘记密码了？</a> | <a href="/Login/Register">注册一个新账号</a>
                 <button id="btnSave" class="btn btn-success btn-block">登录</button>
-                @*</form>*@
             </div>
         </div>
         <div class="signup-footer">
@@ -53,8 +50,9 @@
         if (window.top !== window.self) {
             window.top.location = window.location;
         }
+        
         var selector;
-        var value
+        var value;
         //返回被选择radio的value属性值
         function whichRadioValueChecked(selector) {
             var rtn = "";
@@ -69,7 +67,6 @@
         }
 
         selector = $('input[type="radio"][name="radio1"]');
-        //value= whichRadioValueChecked(selector);
 
         selector.each(function () {
             $(this).change(function () {
@@ -78,17 +75,10 @@
         });
 
         $(document).ready(function () {
-            $("#btnSave").click(function () {
-                //alert("username=" + $("#username").val() + "&pwd=" + $("#password").val())
-                //console.log(value,'你好')
+            $("#btnSave").click(function () {             
                 $.ajax({
                     type: 'GET',
-                    url: '/Login/Login?userName=' + $("#username").val() + "&pwd=" + $("#password").val() + "&value=" + value,
-                    //data: {
-                    //    userNum: $("#username").val(),
-                    //    userPwd: $("#password").val(),
-                    //    orgId: orgId
-                    //},
+                    url: '/Login/Login?userName=' + $("#username").val() + "&pwd=" + $("#password").val() + "&value=" + value,                   
                     dataType: 'Json',
                     success: function (result) {
 
@@ -102,7 +92,7 @@
 
                     },
                     error: function (ref) {
-                        //layer.msg(ref.msg);
+
                     }
                 })
             })
