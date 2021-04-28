@@ -59,59 +59,108 @@
                     </li>
                     <li class="line dk"></li>
                     <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
-                        <span class="ng-scope">学院分类</span>
+                        <span class="ng-scope">课程分类</span>
                     </li>
-                    <li>
-                        <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">信息工程学院</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">计算机科学与技术专业 <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a class="J_menuItem" href="/Course/Index">课程列表</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">软件工程专业 <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a class="J_menuItem" href="/Course/Index">课程列表</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
+                    <li id="li" style="background: #131e26;border-left: 4px solid #19a9d5;">
+                        @*<a class="findInstitute" href="#"><i class="fa fa-desktop"></i> <span class="nav-label">信息工程学院</span><span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="#">计算机科学与技术专业 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+                        <li>
+                            <a class="J_menuItem" href="/Course/Index">课程列表</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav nav-second-level">
+                <li>
+                    <a href="#">软件工程专业 <span class="fa arrow"></span></a>
+                    <ul class="nav nav-third-level">
+                        <li>
+                            <a class="J_menuItem" href="/Course/Index">课程列表</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>*@
 
-                    <li>
-                        <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">经济学院</span><span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">财务管理专业 <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a class="J_menuItem" href="/Course/Index">课程列表</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="#">经济专业 <span class="fa arrow"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li>
-                                        <a class="J_menuItem" href="/Course/Index">课程列表</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
                     </li>
-
+                    <li class="line dk"></li>
+                    <li>
+                        <a data-toggle="modal" href="#modal-form" class="button">添加专业信息</a>
+                    </li>
+                    <li class="line dk"></li>
+                    <li>
+                        <a data-toggle="modal" href="#modal-form1" class="button">添加学院</a>
+                    </li>
+                    <li class="line dk"></li>
+                    <li>
+                        <a data-toggle="modal" href="http://localhost:5000/Files/Index" class="button">审核上传资料</a>
+                    </li>
                 </ul>
             </div>
         </nav>
+
+        <div id="modal-form" class="modal fade" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-9 b-r">
+                                <h3 class="m-t-none m-b">添加专业信息</h3>
+                                <div class="form-group">
+                                    <label>专业名：</label>
+                                    <input type="text" id="majorName" placeholder="专业名称" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>所属学院：</label>
+                                    <input type="text" id="instituteId" placeholder="学院编号" class="form-control">
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        所属学院编号对应列表
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul id="ulInstitute" class="dropdown-menu " aria-labelledby="dropdownMenu1"></ul>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="btnSaveMajor" type="button">
+                                        <strong>保存</strong>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="modal-form1" class="modal fade" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-9 b-r">
+                                <h3 class="m-t-none m-b">添加学院信息</h3>
+                                <div class="form-group">
+                                    <label>学院名：</label>
+                                    <input type="text" id="instituteName" placeholder="学院名称" class="form-control">
+                                </div>                               
+                                <div>
+                                    <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="btnSaveInstitute" type="button">
+                                        <strong>保存</strong>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!--左侧导航结束-->
         <!--右侧部分开始-->
         <div id="page-wrapper" class="gray-bg dashbard-1">
@@ -169,10 +218,10 @@
                             </ul>
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
+                            <a class="J_menuItem" data-toggle="dropdown" href="/User/Index">
+                                <i class="fa fa-user"></i> 
                             </a>
-                            <ul class="dropdown-menu dropdown-alerts">
+                            @*<ul class="dropdown-menu dropdown-alerts">
                                 <li>
                                     <a href="mailbox.html">
                                         <div>
@@ -199,12 +248,13 @@
                                         </a>
                                     </div>
                                 </li>
-                            </ul>
+                            </ul>*@
                         </li>
                         <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="/Login/Index">
-                                <i class="fa fa-close"></i> 
-                            </a>                           
+                            @*<i class="fa fa-close"></i>*@
+                            <a class="J_menuItem" data-toggle="dropdown" href="/Login/Index">
+                                <i class="fa fa-close"></i>
+                            </a>
                         </li>
 
 
@@ -232,8 +282,122 @@
     <!-- 第三方插件 -->
     <script src="~/js/plugins/pace/pace.min.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            $('#loading-example-btn').click(function () {
+                btn = $(this);
+                simpleLoad(btn, true)
+
+                // Ajax example
+                //                $.ajax().always(function () {
+                //                    simpleLoad($(this), false)
+                //                });
+
+                simpleLoad(btn, false)
+            });
+        });
+        f_RefreshInstitute();
+        f_RefreshInstitutes();
+
+        function f_RefreshInstitute() {
+            $.ajaxSettings.async = false;//ajax同步
+            $.get('FindInstituteList', function (data) {
+                var data = eval(data);
+                var str;
+                var totalStr;
+                for (var i = 0; i < data.length; i++) {
+                    str = "<a href=\"#\">" + "<i class=\"fa fa-desktop\"></i>" + "<span class=\"nav-label\">" + data[i].instituteName + "</span>" + "<span class=\"fa arrow\"></span>" + "</a>";
+                    var id = data[i].instituteId;
+                    var longStr = "";
+                    $.get('FindMajorList?instituteId=' + id, function (majorData) {
+                        var majorData = eval(majorData);
+                        var majorStr;
+                        for (var j = 0; j < majorData.length; j++) {
+                            majorStr = "<ul class=\"nav nav-second-level\">" +
+                                "<li>" +
+                                "<a href=\"#\">" + majorData[j].majorName + "<span class=\"fa arrow\">" + "</span>" + "</a>" +
+                                "<ul class=\"nav nav-third-level\">" +
+                                "<li>" +
+                                "<a class=\"J_menuItem\" href=\"/Course/Index?majorId=" + majorData[j].majorId + "\">课程列表</a>" +
+                                "</li>" +
+                                "</ul>" +
+                                "</li>" +
+                                "</ul>";
+                            longStr = longStr + majorStr;
+                        }
+                    });
+                    //alert(longStr);
+                    totalStr = str + longStr;
+                    //$(".li").after(totalStr);
+                    $("#li").append(totalStr);
+                }
+            });
+            $.ajaxSettings.async = true;//ajax异步
+        }
+
+        function f_RefreshInstitutes() {
+            $.get('GetInstitute', function (data) {
+                var data = eval(data);
+                for (var i = 0; i < data.length; i++) {
+                    var str = "<li>" + "<a href=\"#\">" + data[i].instituteId + "—" + data[i].instituteName + "</a>" + "</li>";
+                    $("#ulInstitute").append(str);
+                }
+            });
+        }
+
+        $("#btnSaveMajor").click(function () {
+
+            var major = new Object();
+
+            major.majorName = $("#majorName").val();
+            major.instituteId = $("#instituteId").val();
+            alert(JSON.stringify(major));
+
+            $.ajax({
+                type: 'POST',
+                url: "/Home/AddMajor",
+                //data: JSON.stringify(course),
+                data: {
+                    majorName: $("#majorName").val(),
+                    instituteId: $("#instituteId").val()
+                },
+                dataType: "JSON",
+                //contentType: "application/json",
+                success: function (result) {
+                    alert(result.msg);                   
+                },
+                error: function (result) {
+                    // layer.msg(ref.msg);
+                }
+            })
+
+        });
+
+        $("#btnSaveInstitute").click(function () {
+            var institute = new Object();
+            institute.instituteName = $("#instituteName").val();
+            alert(JSON.stringify(institute));
+            $.ajax({
+                type: 'POST',
+                url: "/Home/AddInstitute",
+                //data: JSON.stringify(course),
+                data: {
+                    instituteName: $("#instituteName").val(),
+                },
+                dataType: "JSON",
+                //contentType: "application/json",
+                success: function (result) {
+                    alert(result.msg);                   
+                },
+                error: function (result) {
+                }
+            })
+
+        });
+
+       
+
+    </script>
+
 </body>
-
-
-
 </html>
