@@ -33,7 +33,7 @@
                     <div class="ibox-content">
                         <div class="row m-b-sm m-t-sm">
                             <div class="col-md-1">
-                                <button type="button" id="loading-example-btn" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
+                                <button type="button" class="btn btn-white btn-sm" @*onclick="Refresh()"*@><i class="fa fa-refresh"></i> 刷新</button>
                             </div>
                             <div class="col-md-11">
                                 <div class="input-group">
@@ -54,6 +54,16 @@
         </div>
     </div>
 
+    <div class="back display" id="pop"> 
+        <div class="pop_content">
+            <div class="confirm">确认审核通过该课程吗?</div>
+            <div class="">
+                <div class="cancel fl pop_select">取消</div>
+                <div class="sure fl pop_select">确定</div>
+            </div>
+        </div>
+    </div>
+
 
     <div id="modal-form" class="modal fade" aria-hidden="true">
         <div class="modal-dialog">
@@ -62,7 +72,6 @@
                     <div class="row">
                         <div class="col-sm-9 b-r">
                             <h3 class="m-t-none m-b">课程添加</h3>
-                            @*<form role="form">*@
                             <div class="form-group">
                                 <label>课程名：</label>
                                 <input type="text" id="courseName" placeholder="课程名" class="form-control">
@@ -80,22 +89,17 @@
                                     所属专业编号对应列表
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu " aria-labelledby="dropdownMenu1">
-                                    <li><a href="#">计算机科学与技术—1</a></li>
-                                    <li><a href="#">软件工程</a></li>
-                                    <li><a href="#">通信工程</a></li>
+                                <ul id="ulmenu" class="dropdown-menu " aria-labelledby="dropdownMenu1">
+                                    
+                                    @*<li><a href="#">软件工程—2</a></li>
+                                    <li><a href="#">通信工程</a></li>*@
                                 </ul>
-                            </div>
-                            <div class="form-group">
-                                <label>创建时间：</label>
-                                <input type="text" id="createTime" placeholder="创建时间" class="form-control">
                             </div>
                             <div>
                                 <button class="btn btn-sm btn-primary pull-right m-t-n-xs" id="btnSave" type="button">
                                     <strong>保存</strong>
                                 </button>
                             </div>
-                            @* </form>*@
                         </div>
 
                     </div>
@@ -123,18 +127,45 @@
                 //                });
                 simpleLoad(btn, false)
             });
-            f_Refresh();
+            var majorId = getUrlParam("majorId");
+            f_Refresh(majorId);
+            f_RefreshMajor();
+
+            function getUrlParam(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+
+                if (r != null) return unescape(r[2]);
+
+                return null; //返回参数值
+
+            }
 
             $("#btnSave").click(function () {
 
                 alert($("#coursePeriod").val());
+                var date = new Date();
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                var Hours = date.getHours();
+                var Minutes = date.getMinutes();
+                var Seconds = date.getSeconds();
+                if (month < 10) {
+                    month = "0" + month;
+                }
+                if (day < 10) {
+                    day = "0" + day;
+                }
+                var s_createtime = year + '-' + month + '-' + day + ' ' + Hours + ':' + Minutes + ':' + Seconds;
 
                 var course = new Object();
-
                 course.coursePeriod = $("#coursePeriod").val();
                 course.courseName = $("#courseName").val();
                 course.majorId = $("#majorId").val();
-                course.createTime = $("#createTime").val();
+                course.createTime = s_createtime;
+                course.status = '0';
                 alert(JSON.stringify(course));
 
                 $.ajax({
@@ -144,13 +175,16 @@
                     data: {
                         coursePeriod: $("#coursePeriod").val(),
                         courseName: $("#courseName").val(),
-                        majorId: $("#majorId").val()
+                        majorId: $("#majorId").val(),
+                        createTime: s_createtime,
+                        status: '0'
                     },
                     dataType: "JSON",
                     //contentType: "application/json",
                     success: function (result) {
                         alert(result.msg);
-                        f_Refresh();
+                        //想先清空页面原始数据再重数据库中拿数据
+                        //f_Refresh();
                         //alert(result.name + " sex:" + result.sex);
                         //if (ref.code > 0) {
                         //window.location.href = "/Home/Index";
@@ -163,19 +197,16 @@
 
             })
 
-            function f_Refresh() {
-                $.get('GetCourseList', function (data) {
+            function f_Refresh(majorId) {
+                $.get('GetCourseList?majorId=' + majorId, function (data) {
                     var data = eval(data);
-                    //alert(data[0].courseName);
-                    //alert(data);
                     for (var i = 0; i < data.length; i++) {
-                        //alert(data[i].courseName)
                         var str = "<tr>" +
                             "<td class=\"project-status\">" +
-                            "<span class=\"label label-primary\">开课中" +
+                            "<span class=\"label label-primary\">" + data[i].statusStr +
                             "</td>" +
                             "<td class=\"project-title\">" +
-                            " <a href=\"project_detail\">" + data[i].courseName + "</a>" +
+                            " <a href=\"/Course/Project_detail?courseId=" + data[i].courseId + "\">" + data[i].courseName + "</a>" +
                             " <br />" +
                             " <small>创建时间：" + data[i].createTimeStr + "</small>" +
                             " </td>" +
@@ -185,17 +216,11 @@
                             "  <div style=\"width: 100%;\" class=\"progress-bar\"></div>" +
                             "</div>" +
                             "</td>" +
-                            "<td class=\"project-datas\">" +
-                            " <small>学习资料</small>" +
-                            " <div class=\"progress progress-mini\">" +
-                            "   <div style=\"width: 10%; \" class=\"progress-bar\"></div>" +
-                            "  </div>" +
-                            "</td> " +
-
                             " <td class=\"project-actions\">" +
                             " <a href=\"/Course/Project_detail?courseId=" + data[i].courseId + "\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-folder\"></i> 查看 </a>" +
-                                " <a href=\"javascript: void (0); \" onclick =\"f_DeteCourse(" + data[i].courseId + ")\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-pencil\"></i> 删除 </a>" +
-                                    "</td>"
+                            " <a href=\"javascript: void (0); \" onclick =\"f_DeteCourse(" + data[i].courseId + ")\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-pencil\"></i> 删除 </a>" +
+                            " <a href=\"javascript: void (0); \" onclick =\"f_CheckCourse(" + data[i].courseId +")\" class=\"btn btn-white btn-sm\"><i class=\"fa fa-pencil\"></i> 审核通过 </a>" +
+                            "</td>"
                         "</tr>";
                         //onclick ="f_FindCourse(${data[i].courseId})"
                         $(".tbody").after(str);
@@ -205,6 +230,39 @@
 
         });
 
+        function f_RefreshMajor() {
+            $.get('GetMajor', function (data) {
+                var data = eval(data);
+                for (var i = 0; i < data.length; i++) {
+                    var str = "<li>" + "<a href=\"#\">" + data[i].majorId + "—" + data[i].majorName + "</a>" + "</li>";
+                    $("#ulmenu").append(str);
+                }
+            });
+        }
+
+
+        function f_RefurbishCourse(majorId) {
+            f_Refresh(majorId);
+        }
+
+        function f_CheckCourse(courseId) {            
+            //alert("check:" + courseId);           
+            $.ajax({
+                type: 'PUT',
+                url: '/Course/CheckCourse?courseId=' + courseId,
+                dataType: 'Json',
+                success: function (result) {
+                    alert(result.msg);
+                    //f_Refresh();
+                },
+                error: function (result) {
+                    alert(result.msg);
+                }
+            })
+            
+           
+        }
+
         function f_DeteCourse(courseId) {
             alert("delet:" + courseId);
             $.ajax({
@@ -213,13 +271,33 @@
                 dataType: 'Json',
                 success: function (result) {
                     alert(result.msg);
-                    f_Refresh();
+                    //f_Refresh();
                 },
                 error: function (result) {
                     alert(result.msg);
                 }
             })
         }
+
+        //function Refresh(majorId) {
+        //    $(".tbody").empty();
+        //    f_Refresh(majorId);
+        //}
+
+        $('#check').on('click', function () {//点击审核按钮显示弹窗
+            $("#pop").removeClass("display")
+        })
+
+        $(".cancel").on('click', function () {//点击取消隐藏弹窗
+            $("#pop").addClass("display")
+        })
+
+        $(".sure").on('click', function () {//点击确认进行审核通过操作并隐藏弹窗
+            $("#pop").addClass("display")
+            alert("审核成功！")
+        })
+
+
 
         //function f_FindCourse(courseId) {
         //    alert("find:" + courseId);
