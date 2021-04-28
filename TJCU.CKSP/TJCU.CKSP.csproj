@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\UploadingFiles\java-coll[1].png" />
+    <None Include="wwwroot\UploadingFiles\QT.jpg" />
+    <None Include="wwwroot\UploadingFiles\test.txt" />
+    <None Include="wwwroot\UploadingFiles\优缺点分析.xlsx" />
+    <None Include="wwwroot\UploadingFiles\实习总结.doc" />
+    <None Include="wwwroot\UploadingFiles\新建 Microsoft Word 文档.docx" />
+    <None Include="wwwroot\UploadingFiles\项目代码结构.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="SqlSugarCore" Version="5.0.2.8" />
+  </ItemGroup>
+
+</Project>
