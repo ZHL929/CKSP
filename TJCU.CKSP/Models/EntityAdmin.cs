@@ -5,7 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
-namespace TJCU.ZHl.CKSP.Models
+namespace TJCU.CKSP.Models
 {
     /// <summary>
     /// 用户表实体
@@ -42,5 +42,19 @@ namespace TJCU.ZHl.CKSP.Models
         [DataMember]
         [SugarColumn(ColumnName = "PHONE_NUMBER")]
         public string PhoneNumber { get; set; }
+
+        /// <summary>
+        /// 年龄
+        /// </summary>
+        [DataMember]
+        [SugarColumn(ColumnName = "ADMIN_AGE")]
+        public string AdminAge { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        [DataMember]
+        [SugarColumn(ColumnName = "ADMIN_SEX")]
+        public string AdminSex { get; set; }
     }
 }

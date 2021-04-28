@@ -66,7 +66,31 @@ namespace TJCU.CKSP.Models
             }
         }
 
+        /// <summary>
+        /// 状态
+        /// </summary>
+        [SugarColumn(ColumnName = "STATUS")]
+        public int? Status { get; set; }
 
+        /// <summary>
+        /// 状态
+        /// </summary>
+        [SugarColumn(IsIgnore = true)]
+        public string StatusStr
+        {
+
+            get
+            {
+                if (Status >= 0)
+                {
+                    return ((EnumStatus)this.Status).ToString();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
     }
     
